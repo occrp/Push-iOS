@@ -16,4 +16,5 @@ target "Push" do
     pod 'DateTools', :path => '~/Repositories/DateTools'
     pod 'YAML-Framework'
     pod 'HTMLKit', '~> 0.9'
+    pod 'NewNode'
 end
