@@ -6,6 +6,8 @@
 //  Copyright © 2016 OCCRP. All rights reserved.
 //
 
+@import NewNode;
+
 #import "NotificationManager.h"
 #import "SettingsManager.h"
 #import "LanguageManager.h"
@@ -111,8 +113,10 @@
                                   @"sandbox": SANDBOX};
     
     NSMutableURLRequest * request = [[AFHTTPRequestSerializer serializer] requestWithMethod:@"POST" URLString:urlString parameters:parameters error:nil];
-    
-    AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+
+    NSURLSessionConfiguration *config = NSURLSessionConfiguration.defaultSessionConfiguration;
+    config.connectionProxyDictionary = NewNode.connectionProxyDictionary;
+    AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:config];
     
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
     
@@ -141,8 +145,10 @@
     
     NSMutableURLRequest * request = [[AFHTTPRequestSerializer serializer] requestWithMethod:@"POST" URLString:urlString parameters:parameters error:nil];
     
-    AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
-    
+    NSURLSessionConfiguration *config = NSURLSessionConfiguration.defaultSessionConfiguration;
+    config.connectionProxyDictionary = NewNode.connectionProxyDictionary;
+    AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:config];
+
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
     
     NSURLSessionDataTask *dataTask = [manager dataTaskWithRequest:request completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {

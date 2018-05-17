@@ -6,6 +6,8 @@
 //  Copyright © 2015 OCCRP. All rights reserved.
 //
 
+@import NewNode;
+
 #import "PushSyncManager.h"
 #import "SettingsManager.h"
 #import "LanguageManager.h"
@@ -37,7 +39,10 @@ static const NSString * versionNumber = @"1.1";
 
 - (instancetype)init
 {
-    return [super initWithBaseURL:[NSURL URLWithString:[SettingsManager sharedManager].pushUrl]];
+    NSURLSessionConfiguration *config = NSURLSessionConfiguration.defaultSessionConfiguration;
+    config.connectionProxyDictionary = NewNode.connectionProxyDictionary;
+    return [super initWithBaseURL:[NSURL URLWithString:[SettingsManager sharedManager].pushUrl]
+             sessionConfiguration:config];
 }
 
 // Returns the current cached array, and then does another call.
