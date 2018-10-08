@@ -23,7 +23,7 @@
     self.articles = articles;
     self.view.userInteractionEnabled = YES;
     self.dataSource = self;
-    self.delegate = self;
+   // self.delegate = self;
     self.view.backgroundColor = [UIColor whiteColor];
 
     NSMutableArray * initialObjects = [NSMutableArray arrayWithCapacity:3];

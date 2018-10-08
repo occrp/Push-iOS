@@ -32,6 +32,7 @@
 #import "AnalyticsManager.h"
 #import "PromotionsManager.h"
 #import "SettingsManager.h"
+#import "Category.h"
 
 // These are also set in the respective nibs, so if you change it make sure you change it there too
 static NSString * featuredCellIdentifier = @"FEATURED_ARTICLE_STORY_CELL";
@@ -46,6 +47,7 @@ static int contentWidth = 700;
 @property (nonatomic, retain) PromotionView * promotionView;
 
 @property (nonatomic, retain) id articles;
+@property (nonatomic, retain) RLMArray<Category*><Category> * categories;
 
 @end
 @implementation MainViewController
@@ -55,22 +57,26 @@ static int contentWidth = 700;
     _articles = articles;
 }
 
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     [self setupNavigationBar];
+    [self loadInitialArticles];
     [self setupTableView];
-    
     __weak typeof(self) weakSelf = self;
     [self.tableView addPullToRefreshWithActionHandler:^{
         [AnalyticsManager logCustomEventWithName:@"Pulled To Refresh Home Screen" customAttributes:nil];
         [weakSelf loadArticles];
+
     }];
     
     [self loadPromotions];
     
     // TODO: Track the user action that is important for you.
     [AnalyticsManager logContentViewWithName:@"Article List" contentType:nil contentId:nil customAttributes:nil];
+    
+    NSLog(@"%@",[RLMRealmConfiguration defaultConfiguration].fileURL);
     
     }
 
@@ -82,7 +88,10 @@ static int contentWidth = 700;
     }
     
     [AnalyticsManager startTimerForContentViewWithObject:self name:@"Article List Timer" contentType:nil contentId:nil customAttributes:nil];
-    [self loadInitialArticles]; 
+    
+    
+    
+    
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -188,48 +197,26 @@ static int contentWidth = 700;
 
 - (void)loadInitialArticles
 {
-    self.articles = [[PushSyncManager sharedManager] articlesWithCompletionHandler:^(NSArray *articles) {
-        self.articles = articles;
-        [self.tableView reloadData];
-        [self.tableView.pullToRefreshView stopAnimating];
-        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
-    } failure:^(NSError *error) {
-        if(error.code == 1200){
-            dispatch_async(dispatch_get_main_queue(), ^{
-                MBProgressHUD * hud = [MBProgressHUD HUDForView:self.view];
-                hud.label.text = @"Fixing Network Issue";
-                hud.detailsLabel.text = @"One moment while we attempt to fix our connection...";
-                hud.progress = 0.45f;
-            });
-            return;
-        }
-        
-        UIAlertController * alert = [UIAlertController alertControllerWithTitle:MYLocalizedString(@"ConnectionError", @"Connection Error") message:error.localizedDescription preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:MYLocalizedString(@"OK", @"OK") style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {}];
-        
-        [alert addAction:defaultAction];
-        [self presentViewController:alert animated:YES completion:nil];
-        [self.tableView.pullToRefreshView stopAnimating];
-        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
-    } loggedOut:^{
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self showLoginViewController];
-        });
-    }];
-    
-    if([self.tableView numberOfRowsInSection:0] < 1){
-        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    }
 
+    RLMResults<Category *> *Categories = [Category objectsWhere: [NSString stringWithFormat: @"language == '%@'", [LanguageManager sharedManager].languageShortCode]];//@"language == [LanguageManager sharedManager].languageShortCode"];
+    NSLog(@"%@", Categories);
+    self.categories = Categories;
+    
 }
 
 - (void)loadArticles
 {
-    self.articles = [[PushSyncManager sharedManager] articlesWithCompletionHandler:^(NSArray *articles) {
-        NSLog(@"%@", articles);
-        self.articles = articles;
+    self.articles = [[PushSyncManager sharedManager] articlesWithCompletionHandler:^(NSString *categories) {
+        //NSLog(@"%@", categories);
+        //if(articles)
+        
+        RLMResults<Category *> *Categories = [Category objectsWhere: [NSString stringWithFormat: @"language == '%@'", [LanguageManager sharedManager].languageShortCode]];//@"language == [LanguageManager sharedManager].languageShortCode"];
+        NSLog(@"%@", Categories);
+        self.categories = Categories;
+        //self.categories = articles;
         [self.tableView reloadData];
         [self.tableView.pullToRefreshView stopAnimating];
+        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
     } failure:^(NSError *error) {
         if(error.code == 1200){
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -367,10 +354,10 @@ static int contentWidth = 700;
     [self setUpBackButton];
     // Triggering this reloads the articles with the new language.
     
-    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    //[self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     // This handles the clearing up of the HUD properly.
-    [self loadInitialArticles];
+    [self loadArticles];
     [self loadPromotions];
     [self.view setNeedsDisplay];
 }
@@ -445,7 +432,7 @@ static int contentWidth = 700;
 {
     CGFloat height = 100.0f;
     
-    if([self.articles respondsToSelector:@selector(allKeys)]){
+    if( self.categories != nil){
         if(indexPath.row == 0){
             if(indexPath.section == 0){
                 height = 42.0f;
@@ -469,36 +456,32 @@ static int contentWidth = 700;
     
     [[tableView cellForRowAtIndexPath:indexPath] setSelected:NO animated:NO];
     
-    NSArray * articles;
+    RLMArray * articles;
     
-    if([self.articles respondsToSelector:@selector(allKeys)]){
-        NSMutableArray * mutableArticles = [NSMutableArray array];
-        for(NSString * sectionName in self.articles[@"categories_order"]){
-            [mutableArticles addObjectsFromArray:self.articles[sectionName]];
-        }
-        articles = [NSArray arrayWithArray:mutableArticles];
+    if(self.categories != nil ){
+        articles = self.categories[indexPath.section].articles;
     } else {
         articles = self.articles;
     }
     
     // If they tap on the section header
-    if(indexPath.row == 0 && [self.articles respondsToSelector:@selector(allKeys)]){
+    if(indexPath.row == 0 && self.categories != nil ){
         
         ArticleTableViewHeader * cell = (ArticleTableViewHeader*)[self tableView:tableView cellForRowAtIndexPath:indexPath].backgroundView;
         SectionViewController * sectionViewController = [[SectionViewController alloc]
-                                                         initWithSectionTitle:self.articles[@"categories_order"][indexPath.section]
-                                                         andArticles:self.articles[cell.categoryName]];
+                                                         initWithSectionTitle:self.categories[indexPath.section].category
+                                                         andArticles:self.categories[indexPath.section].articles];
         
         [self.navigationController pushViewController:sectionViewController animated:YES];
         return;
     }
 
     
-    ArticlePageViewController * articlePageViewController = [[ArticlePageViewController alloc] initWithArticles:articles];
+    ArticlePageViewController * articlePageViewController = [[ArticlePageViewController alloc] initWithArticles: self.categories[indexPath.section].articles];
     
     Article * article;
-    if([self.articles respondsToSelector:@selector(allKeys)]){
-        article = self.articles[self.articles[@"categories_order"][indexPath.section]][indexPath.row - 1];
+    if(self.categories != nil ){
+        article = self.categories[indexPath.section].articles[indexPath.row];
     } else{
         article = self.articles[indexPath.row];
     }
@@ -522,17 +505,17 @@ static int contentWidth = 700;
     ArticleTableViewCell * cell;
     
     // If the articles are seperated by Categories it will be a dictionary here.
-    if([self.articles respondsToSelector:@selector(allKeys)]){
+    if( self.categories != nil ){
         
         if(indexPath.row == 0){
             ArticleTableViewHeader * header = [[ArticleTableViewHeader alloc] initWithTop:(indexPath.section == 0)];
-            header.categoryName = self.articles[@"categories_order"][indexPath.section];
+            header.categoryName = self.categories[indexPath.section].category;
             UITableViewCell * cell = [[UITableViewCell alloc] init];
             cell.backgroundView = header;
             return cell;
         } else {
-            NSString * sectionName = self.articles[@"categories_order"][indexPath.section];
-            NSArray * articles = self.articles[sectionName];
+            NSString * sectionName = self.categories[indexPath.section].category;
+            RLMArray * articles = self.categories[indexPath.section].articles;
             
             if(indexPath.row == 1){
                 cell = [tableView dequeueReusableCellWithIdentifier:featuredCellIdentifier];
@@ -540,7 +523,7 @@ static int contentWidth = 700;
                 cell = [tableView dequeueReusableCellWithIdentifier:standardCellIdentifier];
             }
             
-            cell.article = articles[indexPath.row - 1];
+            cell.article = self.categories[indexPath.section].articles[indexPath.row - 1];
         }
     } else {
         // This is the path if there are no categories
@@ -550,7 +533,7 @@ static int contentWidth = 700;
             cell = [tableView dequeueReusableCellWithIdentifier:standardCellIdentifier];
         }
         
-        cell.article = self.articles[indexPath.row];
+        cell.article = self.categories[indexPath.section].articles[indexPath.row - 1];
     }
 
     if(self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular){
@@ -575,27 +558,18 @@ static int contentWidth = 700;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    if([self.articles respondsToSelector:@selector(allKeys)]){
-        return [self.articles allKeys].count - 1;
-    } else {
-        return 1;
-    }
+    
+        return [self.categories count];
+  
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Random number for testing
-    if([self.articles respondsToSelector:@selector(allKeys)]){
-        NSDictionary * articles = (NSDictionary*)self.articles;
-        long count = [articles[self.articles[@"categories_order"][section]] count];
-        if(count > 5){
-            return 5 + 1;
-        } else {
-            return count + 1;
-        }
-    } else {
-        return [self.articles count];
-    }
+
+    
+        return [self.categories[section].articles count] + 1;
+    
 }
 
 @end

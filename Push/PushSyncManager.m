@@ -13,6 +13,7 @@
 #import <AFNetworking/AFNetworking.h>
 #include "Reachability.h"
 #import <Realm/Realm.h>
+#import "Category.h"
 
 typedef enum : NSUInteger {
     PushSyncLogin,
@@ -256,12 +257,12 @@ dispatch_semaphore_t _sem;
 //        self.articles = [self getCachedArticles];
 //    }
     
-    RLMResults * articles = [[Article allObjects] sortedResultsUsingKeyPath:@"publishDate" ascending:NO];
-    if(articles.count == 0){
+    RLMResults * categories = [[Category allObjects] sortedResultsUsingKeyPath:@"category" ascending:NO];
+    if(categories.count == 0){
         NSLog(@"Articles are not cached");
     }
     
-    return articles;
+    return categories;
 }
 
 - (void)articleWithId:(NSString*)articleId withCompletionHandler:(CompletionBlock)completionHandler failure:(FailureBlock)failure loggedOut:(LoggedOutBlock)loggedOut;
@@ -406,9 +407,30 @@ dispatch_semaphore_t _sem;
         
         [self cacheArticles:categories];
    
+        // test categories transfer
+        
+         RLMRealm *realm = [RLMRealm defaultRealm];
+        NSError * error;
+
+
+        [realm transactionWithBlock:^{
+            for(NSString * categoryDict in [mutableCategoriesResponseDictionary allKeys]){
+                if(![categoryDict  isEqual: @"categories_order"]){
+                Category * category = [Category categoryFromArray:mutableCategoriesResponseDictionary[categoryDict] andCategory:categoryDict andLanguage: [LanguageManager sharedManager].languageShortCode];
+                [realm addOrUpdateObject:category];
+                }
+                NSLog(@"categoryDict: %@", categoryDict);
+            }
+    
+            NSLog(@"categories: %@", categories);
+            
+        } error:&error ];
+        
+        [realm refresh];
+        
         // transfer results to realm database
         
-        RLMRealm *realm = [RLMRealm defaultRealm];
+        /*RLMRealm *realm = [RLMRealm defaultRealm];
         NSError * error;
         [realm transactionWithBlock:^{
             for(NSString * category in categoriesArray){
@@ -421,10 +443,10 @@ dispatch_semaphore_t _sem;
             }
         } error:&error ];
         
-        [realm refresh];
+        [realm refresh];*/
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            completionHandler(categories);
+            completionHandler(@"categories");
         });
     }
     

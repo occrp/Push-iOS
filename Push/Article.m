@@ -33,9 +33,15 @@
         self.caption = jsonDictionary[@"caption"];
         self.url = jsonDictionary[@"url"];
     }
-    
+    NSLog(@"cmsBaseURL: %@",self.cmsURL);
     return self;
 }
+
+- (NSString*)cmsURL
+{
+    return [SettingsManager sharedManager].cmsBaseUrl ;
+}
+
 @end
 
 @implementation PushVideo
@@ -147,6 +153,7 @@
     NSArray * imagesArray = jsonDictionary[@"images"];
     for (NSDictionary * image in imagesArray) {
       [self.images addObject:[[PushImage alloc] initWithJSONDictionary:image]];
+        
     }
     NSArray * videosArray = jsonDictionary[@"videos"];
     for (NSDictionary * video in videosArray) {
@@ -697,6 +704,9 @@
 + (NSString *)primaryKey {
     return @"id";
 }
+
+
+
 
 
 @end

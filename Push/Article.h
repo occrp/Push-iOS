@@ -28,6 +28,7 @@ typedef enum : NSUInteger {
 @property (nonatomic, retain) NSString * caption;
 @property (nonatomic, retain) NSString * byline;
 @property (nonatomic, retain) NSString * url;
+//@property (nonatomic, retain) NSData * imageData;
 
 @end
 RLM_ARRAY_TYPE(PushImage)

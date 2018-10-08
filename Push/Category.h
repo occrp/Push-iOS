@@ -1,13 +1,22 @@
-//
-//  NSObject+Category.h
-//  Push
-//
-//  Created by Izudin Vragic on 10/09/2018.
-//  Copyright © 2018 OCCRP. All rights reserved.
-//
-
 #import <Foundation/Foundation.h>
+#import <Realm/Realm.h>
+#import "Article.h"
 
-@interface NSObject (Category)
+
+
+
+@interface Category : RLMObject <NSCoding>
+
+
+@property (nonatomic, retain) NSString * category;
+@property (nonatomic, nullable) NSString * language;
+@property (nonatomic, readwrite) RLMArray<Article> * articles;
+
+
++ (instancetype)categoryFromArray:(RLMArray *)array  andCategory:(NSString*)categoryName andLanguage:(NSString*)lng;
+- (instancetype)initWithArray:(RLMArray *)array andCategory:(NSString*)categoryName andLanguage:(NSString*)lng;
+
 
 @end
+RLM_ARRAY_TYPE(Category)
+

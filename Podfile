@@ -26,8 +26,8 @@ target "Push" do
     #pod 'DateTools', :path => '~/Repositories/DateTools'
     # Old version of HTMLKit leaks memory for some reason. updated from 0.9 -> 2.1
     pod 'HTMLKit', '~> 2.1'
-    pod 'CPAProxy', :git => 'https://github.com/ursachec/CPAProxy.git'
-    #pod 'CPAProxy', :path => '../CPAProxy'
+    #pod 'CPAProxy', :git => 'https://github.com/ursachec/CPAProxy.git'
+    pod 'CPAProxy', :path => '../CPAProxy'
     pod 'YAML-Framework'
     pod '1PasswordExtension', '~> 1.8.5'
     pod 'Realm'
