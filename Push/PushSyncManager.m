@@ -81,9 +81,9 @@ dispatch_semaphore_t _sem;
         //Set up the singleton class
         _sharedManager = [[PushSyncManager alloc] init];
         // Testing for tor
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-            [_sharedManager checkInternetReachability];
-        });
+        //dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+          //  [_sharedManager checkInternetReachability];
+        //});
     });
     
     return _sharedManager;
@@ -221,24 +221,7 @@ dispatch_semaphore_t _sem;
 {
     __weak typeof(self) weakSelf = self;
 
-    [self waitForStartupWithCompletionHandler:^{
-        if(self.unreachable == true){
-            dispatch_async(self.completionQueue, ^{
-                //[weakSelf waitForStartup];
-                NSMutableDictionary * parameters = [NSMutableDictionary dictionary];
-                if([SettingsManager sharedManager].loginRequired) {
-                    parameters[@"api_key"] = [self apiKey];
-                }
-
-                [weakSelf informCallerThatProxyIsSpinningUpWithType:PushSyncArticles
-                                                         completion:completionHandler
-                                                            failure:failure
-                                                          loggedOut:loggedOut
-                                                  requestParameters:parameters];
-            });
-            
-        } else {
-            dispatch_async(self.completionQueue, ^{
+  
                 //[weakSelf waitForStartup];
                 NSMutableDictionary * parameters = [NSMutableDictionary
                                                     dictionaryWithDictionary:@{@"installation_uuid": [AnalyticsManager installationUUID],
@@ -254,10 +237,10 @@ dispatch_semaphore_t _sem;
                 } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                     [weakSelf handleError:error failure:failure];
                 }];
-            });
-        }
+    
         
-    }];
+        
+
     
 //    if(!self.articles || ([self.articles respondsToSelector:@selector(count)] && [self.articles count] == 0) ||
 //       ([self.articles respondsToSelector:@selector(allKeys)] && [[self.articles allKeys] count] == 0)){
@@ -374,13 +357,18 @@ dispatch_semaphore_t _sem;
 
 - (void)handleResponse:(NSDictionary*)responseObject completionHandler:(void(^)(NSObject * articles))completionHandler loggedOut:(LoggedOutBlock)loggedOutHandler
 {
+    RLMRealm *realm = [RLMRealm defaultRealm];
+  /*  [realm beginWriteTransaction];
+    [realm deleteAllObjects];
+    [realm commitWriteTransaction];
+*/
     NSDictionary * response = (NSDictionary*)responseObject;
     [self verifyLoginStatusForResponse:responseObject loggedOut:loggedOutHandler];
     
     /* we want to handle both categories and consolidated returns */
     if(![response.allKeys containsObject:@"categories"]){
         NSArray * articles = [self articlesForResponse:response[@"results"]];
-        RLMRealm *realm = [RLMRealm defaultRealm];
+        //RLMRealm *realm = [RLMRealm defaultRealm];
         NSError * error;
         [realm transactionWithBlock:^{
             for(Article * article in articles){
@@ -416,7 +404,7 @@ dispatch_semaphore_t _sem;
    
         // test categories transfer
         
-         RLMRealm *realm = [RLMRealm defaultRealm];
+
         NSError * error;
 
 

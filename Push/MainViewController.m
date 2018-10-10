@@ -201,6 +201,15 @@ static int contentWidth = 700;
     RLMResults<Category *> *Categories = [Category objectsWhere: [NSString stringWithFormat: @"language == '%@'", [LanguageManager sharedManager].languageShortCode]];//@"language == [LanguageManager sharedManager].languageShortCode"];
     NSLog(@"%@", Categories);
     self.categories = Categories;
+    if(self.categories.count == 0){
+        [self loadArticles];
+    }
+    
+}
+
+- (void)sortCategories {
+    
+    
     
 }
 
