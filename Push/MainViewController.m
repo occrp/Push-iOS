@@ -481,7 +481,7 @@ static int contentWidth = 700;
     
     Article * article;
     if(self.categories != nil ){
-        article = self.categories[indexPath.section].articles[indexPath.row];
+        article = self.categories[indexPath.section].articles[indexPath.row-1];
     } else{
         article = self.articles[indexPath.row];
     }

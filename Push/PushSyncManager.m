@@ -5,7 +5,7 @@
 //  Created by Christopher Guess on 11/11/15.
 //  Copyright © 2015 OCCRP. All rights reserved.
 //
-
+@import NewNode;
 #import "PushSyncManager.h"
 #import "SettingsManager.h"
 #import "LanguageManager.h"
@@ -14,6 +14,7 @@
 #include "Reachability.h"
 #import <Realm/Realm.h>
 #import "Category.h"
+
 
 typedef enum : NSUInteger {
     PushSyncLogin,
@@ -90,14 +91,20 @@ dispatch_semaphore_t _sem;
 
 - (instancetype)init
 {
-    self = [super initWithBaseURL:self.baseURL];
+    NSURLSessionConfiguration *config = NSURLSessionConfiguration.defaultSessionConfiguration;
+    config.connectionProxyDictionary = NewNode.connectionProxyDictionary;
+    return [super initWithBaseURL:[NSURL URLWithString:[SettingsManager sharedManager].pushUrl]
+             sessionConfiguration:config];
+    
+    
+    /*self = [super initWithBaseURL:self.baseURL];
     if(self) {
         self.torRequests = [NSMutableArray array];
         self.unreachable = true;
         self.startingUp = true;
-    }
+    }*/
     
-    return self;
+    //return self;
 }
 
 - (BOOL)isLoggedIn {
