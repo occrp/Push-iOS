@@ -62,8 +62,7 @@ static int contentWidth = 700;
     [super viewDidLoad];
     
     [self setupNavigationBar];
-    [self loadInitialArticles];
-    [self setupTableView];
+    
     __weak typeof(self) weakSelf = self;
     [self.tableView addPullToRefreshWithActionHandler:^{
         [AnalyticsManager logCustomEventWithName:@"Pulled To Refresh Home Screen" customAttributes:nil];
@@ -82,6 +81,19 @@ static int contentWidth = 700;
 
 - (void)viewDidAppear:(BOOL)animated
 {
+    
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        [self loadInitialArticles];
+        //[MBProgressHUD hideHUDForView:self.view animated:YES];
+        
+    });
+    
+    
+    //[self loadInitialArticles];
+    [self setupTableView];
+    
     if([SettingsManager sharedManager].loginRequired && ![PushSyncManager sharedManager].isLoggedIn){
         [self showLoginViewController];
         return;
@@ -197,12 +209,19 @@ static int contentWidth = 700;
 
 - (void)loadInitialArticles
 {
-
+    
     RLMResults<Category *> *Categories = [Category objectsWhere: [NSString stringWithFormat: @"language == '%@'", [LanguageManager sharedManager].languageShortCode]];//@"language == [LanguageManager sharedManager].languageShortCode"];
     NSLog(@"%@", Categories);
     self.categories = Categories;
     if(self.categories.count == 0){
+        
         [self loadArticles];
+ 
+    }else{
+       
+           [MBProgressHUD hideHUDForView:self.view animated:YES];
+            [self.tableView reloadData];
+      
     }
     
 }
@@ -243,6 +262,7 @@ static int contentWidth = 700;
         [alert addAction:defaultAction];
         [self presentViewController:alert animated:YES completion:nil];
         [self.tableView.pullToRefreshView stopAnimating];
+        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
     } loggedOut:^{
         [self showLoginViewController];
     }];
