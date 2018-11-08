@@ -432,10 +432,25 @@ static int contentWidth = 700;
     
     [bodyAttributedText addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, bodyAttributedText.string.length)];
     
+    self.body.text = self.article.dbBodyString;
+    //[bodyAttributedText addAttribute:NSForegroundColorAttributeName value:[UIColor blackColor] range:[self.body.text rangeOfString:self.body.text ]];
+    
+    
     //bodyAttributedText = [[NSMutableAttributedString alloc] initWithAttributedString:[self addImagePlaceholderToAttributedString:bodyAttributedText]];
+    
+    self.body.attributedText = bodyAttributedText;
+    //[self.view bringSubviewToFront:self.body];
+    //self.body.alpha = 1;
+    self.body.textColor = [UIColor blackColor];
     
     dispatch_async(dispatch_get_main_queue(), ^{
         self.body.attributedText = bodyAttributedText;
+        //[self.view bringSubviewToFront:self.body];
+        //self.body.alpha = 1;
+        self.body.textColor = [UIColor blackColor];
+    
+      
+        
     });
 }
 

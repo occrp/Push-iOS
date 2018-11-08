@@ -33,6 +33,7 @@
 #import "PromotionsManager.h"
 #import "SettingsManager.h"
 #import "Category.h"
+#import "Push-Swift.h"
 
 // These are also set in the respective nibs, so if you change it make sure you change it there too
 static NSString * featuredCellIdentifier = @"FEATURED_ARTICLE_STORY_CELL";
@@ -530,7 +531,8 @@ static int contentWidth = 700;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+ 
+    [self beginBatchFatch];
     ArticleTableViewCell * cell;
     
     // If the articles are seperated by Categories it will be a dictionary here.
@@ -584,6 +586,24 @@ static int contentWidth = 700;
     return cell;
 }
 
+
+- (void) scrollViewDidScroll:(UIScrollView *)scrollView{
+    CGFloat offset = scrollView.contentOffset.y;
+    CGFloat contentHeight = scrollView.contentSize.height;
+    
+    if (offset > contentHeight){
+        
+        [self beginBatchFatch];
+    }
+    
+    
+}
+
+- (void) beginBatchFatch {
+    
+    ArticleListTableViewController * tableViewSwift = [ArticleListTableViewController new];
+    [tableViewSwift testSwift];
+}
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {

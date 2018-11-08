@@ -261,7 +261,7 @@
                                                       documentAttributes:nil];
     
     [bodyAttributedText addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, bodyAttributedText.string.length)];
-    
+    [bodyAttributedText addAttribute:NSForegroundColorAttributeName value:[UIColor blackColor] range:NSMakeRange(0, bodyAttributedText.string.length)];
     
     return [self addImagePlaceholderToAttributedString:bodyAttributedText];
 
