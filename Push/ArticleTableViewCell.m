@@ -49,7 +49,9 @@
     }
     
     if(headerImageURL){
-        NSURLRequest * request = [NSURLRequest requestWithURL:[NSURL URLWithNonLatinString:headerImageURL]];
+        NSMutableURLRequest * request = [NSMutableURLRequest requestWithURL:[NSURL URLWithNonLatinString:headerImageURL]];
+        [request setValue:@"text/html" forHTTPHeaderField:@"acceptableContentTypes"];
+        
         [self.imageView setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, UIImage * _Nonnull image) {
             weakSelf.articleImageView.image = image;
             [weakSelf drawViews:YES];

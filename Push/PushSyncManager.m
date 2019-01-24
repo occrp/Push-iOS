@@ -96,15 +96,15 @@ dispatch_semaphore_t _sem;
     return [super initWithBaseURL:[NSURL URLWithString:[SettingsManager sharedManager].pushUrl]
              sessionConfiguration:config];
     
-    
-    /*self = [super initWithBaseURL:self.baseURL];
+    /*
+    self = [super initWithBaseURL:self.baseURL];
     if(self) {
         self.torRequests = [NSMutableArray array];
         self.unreachable = true;
         self.startingUp = true;
-    }*/
+    }
     
-    //return self;
+    return self;*/
 }
 
 - (BOOL)isLoggedIn {
@@ -168,7 +168,7 @@ dispatch_semaphore_t _sem;
             //[weakSelf waitForStartup];
             NSDictionary * parameters = @{@"username": username,
                                           @"password": password,
-                                          @"installation_uuid": [AnalyticsManager installationUUID],
+                                          @"installation_uuid": [[AnalyticsManager sharedManager] installationUUID],
                                           @"language":[LanguageManager sharedManager].languageShortCode,
                                           @"v":versionNumber};
             
@@ -221,18 +221,28 @@ dispatch_semaphore_t _sem;
 {
     __weak typeof(self) weakSelf = self;
 
+    NSString * languageShortCode = [LanguageManager sharedManager].languageShortCode;
+    
+    //iOS uses 'sr' for Serbian, the rest of the world uses 'rs', so switch it here
+    if([languageShortCode isEqualToString:@"sr"]){
+        languageShortCode = @"rs";
+    }else if ([languageShortCode isEqualToString:@"tg-TJ"]){
+        languageShortCode = @"tj";
+    }
   
                 //[weakSelf waitForStartup];
                 NSMutableDictionary * parameters = [NSMutableDictionary
-                                                    dictionaryWithDictionary:@{@"installation_uuid": [AnalyticsManager installationUUID],
-                                                    @"language":[LanguageManager sharedManager].languageShortCode,
-                                                    @"v":versionNumber,
+                                                    dictionaryWithDictionary:@{@"installation_uuid": [[AnalyticsManager sharedManager] installationUUID],
+                                                                               @"language":languageShortCode,
+                                                    @"Content-type":@"application/json",
                                                     @"categories":@"true"}];
                 if([SettingsManager sharedManager].loginRequired) {
                     parameters[@"api_key"] = [self apiKey];
                 }
 
                 [weakSelf GET:@"articles.json" parameters:parameters progress: nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+                    weakSelf.requestSerializer = [AFJSONRequestSerializer serializer];
+                     NSLog(@"responseObject: %@", responseObject);
                     [weakSelf handleResponse:responseObject completionHandler:completionHandler loggedOut:loggedOut];
                 } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                     [weakSelf handleError:error failure:failure];
@@ -263,6 +273,8 @@ dispatch_semaphore_t _sem;
         //iOS uses 'sr' for Serbian, the rest of the world uses 'rs', so switch it here
         if([languageShortCode isEqualToString:@"sr"]){
             languageShortCode = @"rs";
+        }else if ([languageShortCode isEqualToString:@"tg-TJ"]){
+            languageShortCode = @"tj";
         }
         
         if(self.unreachable == true){
@@ -281,7 +293,7 @@ dispatch_semaphore_t _sem;
         } else {
             NSMutableDictionary * parameters = [NSMutableDictionary
                                                 dictionaryWithDictionary:@{
-                                                                           @"installation_uuid": [AnalyticsManager installationUUID],
+                                                                           @"installation_uuid": [[AnalyticsManager sharedManager] installationUUID],
                                                                            @"id":articleId,
                                                                            @"language":[LanguageManager sharedManager].languageShortCode,
                                                                            @"v":versionNumber}];
@@ -307,6 +319,8 @@ dispatch_semaphore_t _sem;
         //iOS uses 'sr' for Serbian, the rest of the world uses 'rs', so switch it here
         if([languageShortCode isEqualToString:@"sr"]){
             languageShortCode = @"rs";
+        } else if ([languageShortCode isEqualToString:@"tg-TJ"]){
+            languageShortCode = @"tj";
         }
         
         if(self.unreachable == true){
@@ -324,7 +338,7 @@ dispatch_semaphore_t _sem;
         } else {
             NSMutableDictionary * parameters = [NSMutableDictionary
                                                 dictionaryWithDictionary:@{
-                                                                           @"installation_uuid": [AnalyticsManager installationUUID],
+                                                                           @"installation_uuid": [[AnalyticsManager sharedManager] installationUUID],
                                                                            @"q":searchTerms,
                                                                            @"language":[LanguageManager sharedManager].languageShortCode,
                                                                            @"v":versionNumber}];
@@ -449,7 +463,7 @@ dispatch_semaphore_t _sem;
 
 - (void)handleError:(NSError*)error failure:(void(^)(NSError *error))failure
 {
-    [AnalyticsManager logErrorWithErrorDescription:error.localizedDescription];
+    [[AnalyticsManager sharedManager] logErrorWithErrorDescription:error.localizedDescription];
     dispatch_async(dispatch_get_main_queue(), ^{
         failure(error);
     });

@@ -23,7 +23,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Start analytics tracking
-    [AnalyticsManager setupForAnaylytics:CWGAnalyticsCrashlytics];
+    [[AnalyticsManager sharedManager] setupForAnaylytics:CWGAnalyticsCrashlytics];
     
     RLMRealmConfiguration *config = [RLMRealmConfiguration defaultConfiguration];
     // Set the new schema version. This must be greater than the previously used

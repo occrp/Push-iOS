@@ -4,4 +4,4 @@
 
 #import "Category.h"
 #import "Article.h"
-
+#import "Promotion.h"

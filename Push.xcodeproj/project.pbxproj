@@ -11,9 +11,7 @@
 		4C16D1F82194570500DE49CC /* Category.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C4525F22146B9B300BE1D7E /* Category.m */; };
 		4C16D1F92194570600DE49CC /* Category.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C4525F22146B9B300BE1D7E /* Category.m */; };
 		4C4525F32146B9B300BE1D7E /* Category.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C4525F22146B9B300BE1D7E /* Category.m */; };
-		4C6DCC4921931A9F00B990A7 /* ArticleListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C6DCC4821931A9F00B990A7 /* ArticleListTableViewController.swift */; };
-		4C6DCC4A21931A9F00B990A7 /* ArticleListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C6DCC4821931A9F00B990A7 /* ArticleListTableViewController.swift */; };
-		4C6DCC4B21931A9F00B990A7 /* ArticleListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C6DCC4821931A9F00B990A7 /* ArticleListTableViewController.swift */; };
+		4CA3BF192194722D00AE61DD /* Push-Bridging-Header.h in Sources */ = {isa = PBXBuildFile; fileRef = 4C6DCC4621931A9E00B990A7 /* Push-Bridging-Header.h */; };
 		9D0B05CD1D129885001D3B2F /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D0B05CC1D129885001D3B2F /* QuartzCore.framework */; };
 		9D0B05D61D12A524001D3B2F /* ClickIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D0B05D51D12A524001D3B2F /* ClickIndicator.m */; };
 		9D216105200E96BA001F53EB /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D216104200E96BA001F53EB /* LoginViewController.m */; };
@@ -140,7 +138,7 @@
 		4C4525F22146B9B300BE1D7E /* Category.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = Category.m; path = Push/Category.m; sourceTree = SOURCE_ROOT; };
 		4C6DCC4621931A9E00B990A7 /* Push-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Push-Bridging-Header.h"; path = "Push/Push-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
 		4C6DCC4721931A9E00B990A7 /* PushTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PushTests-Bridging-Header.h"; sourceTree = "<group>"; };
-		4C6DCC4821931A9F00B990A7 /* ArticleListTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleListTableViewController.swift; sourceTree = "<group>"; };
+		4CEDD72821F7362700962756 /* tg-TJ */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "tg-TJ"; path = "tg-TJ.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		56238ADECDA5C2AEF1436CA9 /* Pods-Push.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Push.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Push/Pods-Push.debug.xcconfig"; sourceTree = "<group>"; };
 		6C35FD7A9ADC79A2128465A9 /* Pods-Push.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Push.release.xcconfig"; path = "Pods/Target Support Files/Pods-Push/Pods-Push.release.xcconfig"; sourceTree = "<group>"; };
 		9D0B05CC1D129885001D3B2F /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -339,38 +337,6 @@
 				4C4525F22146B9B300BE1D7E /* Category.m */,
 			);
 			name = Category;
-			sourceTree = "<group>";
-		};
-		4C6DCC4C21931E7A00B990A7 /* PushSwift */ = {
-			isa = PBXGroup;
-			children = (
-				4C6DCC4F21931EA900B990A7 /* Views */,
-				4C6DCC4E21931E9B00B990A7 /* Models */,
-				4C6DCC4D21931E8D00B990A7 /* Controllers */,
-			);
-			path = PushSwift;
-			sourceTree = "<group>";
-		};
-		4C6DCC4D21931E8D00B990A7 /* Controllers */ = {
-			isa = PBXGroup;
-			children = (
-				4C6DCC4821931A9F00B990A7 /* ArticleListTableViewController.swift */,
-			);
-			path = Controllers;
-			sourceTree = "<group>";
-		};
-		4C6DCC4E21931E9B00B990A7 /* Models */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
-		4C6DCC4F21931EA900B990A7 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Views;
 			sourceTree = "<group>";
 		};
 		9D216102200E9661001F53EB /* Login View Controller */ = {
@@ -711,7 +677,6 @@
 		9DE4A0F51BE2531D00B69170 = {
 			isa = PBXGroup;
 			children = (
-				4C6DCC4C21931E7A00B990A7 /* PushSwift */,
 				9DCC79821BF374A900F28F18 /* Podfile */,
 				9DE4A1001BE2531E00B69170 /* Push */,
 				9DE4A11A1BE2531F00B69170 /* PushTests */,
@@ -1052,7 +1017,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0720;
-				LastUpgradeCheck = 0820;
+				LastUpgradeCheck = 1010;
 				ORGANIZATIONNAME = OCCRP;
 				TargetAttributes = {
 					9DE4A0FD1BE2531D00B69170 = {
@@ -1105,6 +1070,7 @@
 				bg,
 				bs,
 				English,
+				"tg-TJ",
 			);
 			mainGroup = 9DE4A0F51BE2531D00B69170;
 			productRefGroup = 9DE4A0FF1BE2531E00B69170 /* Products */;
@@ -1272,6 +1238,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4CA3BF192194722D00AE61DD /* Push-Bridging-Header.h in Sources */,
 				9D8D33371C610C5E0053FE3E /* NSMutableAttributedString+HTML.m in Sources */,
 				9D56AF4C1D10C22000892C87 /* Promotion.m in Sources */,
 				9D4054C11D10BC2C00361CBE /* WebSiteViewController.m in Sources */,
@@ -1290,7 +1257,6 @@
 				9D0B05D61D12A524001D3B2F /* ClickIndicator.m in Sources */,
 				9DE4A14A1BE2668200B69170 /* Article.m in Sources */,
 				9D4327D81DBB6E1300A6FEB2 /* HorizontalRule.m in Sources */,
-				4C6DCC4921931A9F00B990A7 /* ArticleListTableViewController.swift in Sources */,
 				9D69C1EA1C62756E00D537EF /* PauseButton.m in Sources */,
 				9DE4A1061BE2531E00B69170 /* AppDelegate.m in Sources */,
 				9D216105200E96BA001F53EB /* LoginViewController.m in Sources */,
@@ -1324,7 +1290,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4C6DCC4A21931A9F00B990A7 /* ArticleListTableViewController.swift in Sources */,
 				4C16D1F82194570500DE49CC /* Category.m in Sources */,
 				9DE4A11C1BE2531F00B69170 /* PushTests.m in Sources */,
 			);
@@ -1334,7 +1299,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4C6DCC4B21931A9F00B990A7 /* ArticleListTableViewController.swift in Sources */,
 				9DE4A1271BE2531F00B69170 /* PushUITests.m in Sources */,
 				9D51C6151C6CDC8600BF434B /* SnapshotHelper.swift in Sources */,
 				4C16D1F92194570600DE49CC /* Category.m in Sources */,
@@ -1368,6 +1332,7 @@
 				9DF88ED91D08D3C600F87C23 /* sr */,
 				9DE0EE151D3BFE7F0061BEA1 /* bg */,
 				9DDA3FAE1E09FFA8005F4A0A /* bs */,
+				4CEDD72821F7362700962756 /* tg-TJ */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -1379,18 +1344,27 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -1426,18 +1400,27 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -1574,7 +1557,6 @@
 		9DE4A12F1BE2531F00B69170 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -1595,7 +1577,6 @@
 		9DE4A1301BE2531F00B69170 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -1615,7 +1596,6 @@
 		9DE4A1321BE2531F00B69170 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9H5K42BU9H;
@@ -1636,7 +1616,6 @@
 		9DE4A1331BE2531F00B69170 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9H5K42BU9H;

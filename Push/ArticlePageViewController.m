@@ -26,12 +26,8 @@
    // self.delegate = self;
     self.view.backgroundColor = [UIColor whiteColor];
 
-    NSMutableArray * initialObjects = [NSMutableArray arrayWithCapacity:3];
-    [initialObjects addObject:self.articles[0]];
-    [initialObjects addObject:self.articles[1]];
-    [initialObjects addObject:self.articles[2]];
-    ArticleViewController * avc = [[ArticleViewController alloc] initWithArticle:self.articles[0]];
-    [self setViewControllers:@[avc] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
+   // ArticleViewController * avc = [[ArticleViewController alloc] initWithArticle:self.articles[0]];
+   // [self setViewControllers:@[avc] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
     
     return self;
 }

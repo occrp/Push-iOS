@@ -132,7 +132,9 @@ static NSString * languageKey = @"push_language_key";
                                                @"sr": @"%%@%@ %%@",
                                                @"bg": @"%%@%@ %%@",
                                                @"ka": @"%%@%@ %%@",
-                                               @"bs": @"%%@%@ %%@"};
+                                               @"bs": @"%%@%@ %%@",
+                                               @"tg-TJ": @"%%@%@ %%@"
+                                               };
     
     NSString * localizedString = MYLocalizedString(@"by", @"between the author and date");
     NSString * format = [NSString stringWithFormat:bylineFormatByLanguage[languageShortCode], localizedString];
@@ -223,21 +225,29 @@ static NSString * languageKey = @"push_language_key";
         if([localization isEqualToString:@"Base"]){
             continue;
         }
-        if([[languageFullNames allKeys] containsObject:localization]){
+        if([[languageFullNames allKeys ] containsObject:localization]){
             [localizationsFullName addObject:languageFullNames[localization]];
         }
     }
     
-    return [NSArray arrayWithArray:localizationsFullName];
+    return [NSArray arrayWithArray:localizationsFullName ];
 }
 
 - (NSArray*)nativeAvailableLanguages
 {
-    NSDictionary * languages = [self languageDictionary];
+   
     NSMutableArray * mutableLangugages = [NSMutableArray array];
     
-    for(NSString * key in [languages.allKeys sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)]){
-        [mutableLangugages addObject:[[self localizedStringForKey:@"LanguageName" value:@"nil" forLanguageShortCode:key] capitalizedString]];
+    for(NSString * key in [self availableLanguages]){
+        NSString * keyShort = @"";
+        NSDictionary * tempLanguages = [self languageDictionary];
+        
+        for (NSString *keyS in [tempLanguages allKeys]) {
+            if([tempLanguages[keyS] isEqual:key]){
+                keyShort = keyS;
+            }
+        }
+        [mutableLangugages addObject:[[self localizedStringForKey:@"LanguageName" value:@"nil" forLanguageShortCode:keyShort] capitalizedString]];
     }
     
     return [NSArray arrayWithArray:mutableLangugages];
@@ -245,7 +255,7 @@ static NSString * languageKey = @"push_language_key";
 
 - (NSDictionary*)languageDictionary
 {
-    NSDictionary * languageFullNames = @{ @"ro": @"Romanian", @"ru": @"Russian", @"bg" : @"Bulgarian", @"en": @"English", @"az" : @"Azerbaijani", @"sr" : @"Serbian", @"ka" : @"Georgian", @"bs" : @"Bosnian"};
+    NSDictionary * languageFullNames = @{ @"ro": @"Romanian", @"ru": @"Russian", @"bg" : @"Bulgarian", @"en": @"English", @"az" : @"Azerbaijani", @"sr" : @"Serbian", @"ka" : @"Georgian", @"bs" : @"Bosnian", @"tg-TJ" : @"Tajiki"};
     NSArray * languages = [SettingsManager sharedManager].languages;
     
     NSMutableDictionary * languageFullNamesCopy = [NSMutableDictionary dictionaryWithDictionary:languageFullNames];

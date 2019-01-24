@@ -33,7 +33,6 @@
 #import "PromotionsManager.h"
 #import "SettingsManager.h"
 #import "Category.h"
-#import "Push-Swift.h"
 
 // These are also set in the respective nibs, so if you change it make sure you change it there too
 static NSString * featuredCellIdentifier = @"FEATURED_ARTICLE_STORY_CELL";
@@ -63,18 +62,19 @@ static int contentWidth = 700;
     [super viewDidLoad];
     
     [self setupNavigationBar];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        [self loadInitialArticles];
+        //[MBProgressHUD hideHUDForView:self.view animated:YES];
+        
+    });
     
-    __weak typeof(self) weakSelf = self;
-    [self.tableView addPullToRefreshWithActionHandler:^{
-        [AnalyticsManager logCustomEventWithName:@"Pulled To Refresh Home Screen" customAttributes:nil];
-        [weakSelf loadArticles];
-
-    }];
+    
     
     [self loadPromotions];
     
     // TODO: Track the user action that is important for you.
-    [AnalyticsManager logContentViewWithName:@"Article List" contentType:nil contentId:nil customAttributes:nil];
+    [[AnalyticsManager sharedManager] logContentViewWithName:@"Article List" contentType:nil contentId:nil customAttributes:nil];
     
     NSLog(@"%@",[RLMRealmConfiguration defaultConfiguration].fileURL);
     
@@ -84,12 +84,12 @@ static int contentWidth = 700;
 {
     
     
-    dispatch_async(dispatch_get_main_queue(), ^{
+  /*  dispatch_async(dispatch_get_main_queue(), ^{
         [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         [self loadInitialArticles];
         //[MBProgressHUD hideHUDForView:self.view animated:YES];
         
-    });
+    });*/
     
     
     //[self loadInitialArticles];
@@ -100,7 +100,7 @@ static int contentWidth = 700;
         return;
     }
     
-    [AnalyticsManager startTimerForContentViewWithObject:self name:@"Article List Timer" contentType:nil contentId:nil customAttributes:nil];
+    [[AnalyticsManager sharedManager] startTimerForContentViewWithObject:self name:@"Article List Timer" contentType:nil contentId:nil customAttributes:nil];
     
     
     
@@ -109,7 +109,7 @@ static int contentWidth = 700;
 
 - (void)viewDidDisappear:(BOOL)animated
 {
-    [AnalyticsManager endTimerForContentViewWithObject:self andName:@"Article List Timer"];
+    [[AnalyticsManager sharedManager] endTimerForContentViewWithObject:self andName:@"Article List Timer"];
 }
 
 - (void)showLoginViewController
@@ -193,6 +193,13 @@ static int contentWidth = 700;
     
     [self.tableView registerNib:[UINib nibWithNibName:@"ArticleTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:standardCellIdentifier];
     [self.tableView registerNib:[UINib nibWithNibName:@"FeaturedArticleTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:featuredCellIdentifier];
+    
+    __weak typeof(self) weakSelf = self;
+    
+    [self.tableView addPullToRefreshWithActionHandler:^{
+        [[AnalyticsManager sharedManager] logCustomEventWithName:@"Pulled To Refresh Home Screen" customAttributes:nil];
+        [weakSelf loadArticles];
+    }];
 }
 
 - (void)viewDidLayoutSubviews {
@@ -227,11 +234,6 @@ static int contentWidth = 700;
     
 }
 
-- (void)sortCategories {
-    
-    
-    
-}
 
 - (void)loadArticles
 {
@@ -332,7 +334,7 @@ static int contentWidth = 700;
 
 - (void)aboutButtonTapped
 {
-    [AnalyticsManager logContentViewWithName:@"About Tapped" contentType:@"Navigation"
+    [[AnalyticsManager sharedManager] logContentViewWithName:@"About Tapped" contentType:@"Navigation"
                           contentId:nil customAttributes:nil];
 
     AboutViewController * aboutViewController = [[AboutViewController alloc] init];
@@ -341,7 +343,7 @@ static int contentWidth = 700;
 
 - (void)searchButtonTapped
 {
-    [AnalyticsManager logContentViewWithName:@"Search Tapped" contentType:@"Navigation"
+    [[AnalyticsManager sharedManager] logContentViewWithName:@"Search Tapped" contentType:@"Navigation"
                           contentId:nil customAttributes:nil];
 
     SearchViewController * searchViewController = [[SearchViewController alloc] init];
@@ -352,12 +354,12 @@ static int contentWidth = 700;
 - (void)languageButtonTapped
 {
     if(!self.languagePickerView){
-        [AnalyticsManager logContentViewWithName:@"Language Button Tapped and Shown" contentType:@"Settings"
+        [[AnalyticsManager sharedManager] logContentViewWithName:@"Language Button Tapped and Shown" contentType:@"Settings"
                               contentId:nil customAttributes:nil];
 
         [self showLanguagePicker];
     } else {
-        [AnalyticsManager logContentViewWithName:@"Language Button Tapped and Hidden" contentType:@"Settings"
+        [[AnalyticsManager sharedManager] logContentViewWithName:@"Language Button Tapped and Hidden" contentType:@"Settings"
                               contentId:nil customAttributes:nil];
 
         [self hideLanguagePicker];
@@ -368,7 +370,7 @@ static int contentWidth = 700;
 
 - (void)languagePickerDidChooseLanguage:(NSString *)language
 {
-    [AnalyticsManager logContentViewWithName:@"Language Chosen" contentType:@"Settings"
+    [[AnalyticsManager sharedManager] logContentViewWithName:@"Language Chosen" contentType:@"Settings"
                           contentId:language customAttributes:@{@"language":language}];
 
     NSString * oldLanguageShortCode = [LanguageManager sharedManager].languageShortCode;
@@ -519,7 +521,7 @@ static int contentWidth = 700;
     ArticleViewController * articleViewController = [[ArticleViewController alloc] initWithArticle:article];
     [articlePageViewController setViewControllers:@[articleViewController] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
     
-    [AnalyticsManager logContentViewWithName:@"Article List Item Tapped" contentType:@"Navigation"
+    [[AnalyticsManager sharedManager] logContentViewWithName:@"Article List Item Tapped" contentType:@"Navigation"
                           contentId:article.description customAttributes:article.trackingProperties];
     
     
@@ -532,7 +534,7 @@ static int contentWidth = 700;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
  
-    [self beginBatchFatch];
+    //[self beginBatchFatch];
     ArticleTableViewCell * cell;
     
     // If the articles are seperated by Categories it will be a dictionary here.
@@ -601,8 +603,8 @@ static int contentWidth = 700;
 
 - (void) beginBatchFatch {
     
-    ArticleListTableViewController * tableViewSwift = [ArticleListTableViewController new];
-    [tableViewSwift testSwift];
+   // ArticleListTableViewController * tableViewSwift = [ArticleListTableViewController new];
+    //[tableViewSwift testSwift];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView

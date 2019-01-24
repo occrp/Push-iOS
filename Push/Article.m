@@ -100,6 +100,7 @@
                 [self.videos addObject:[[PushVideo alloc] initWithJSONDictionary:obj]];
             }] ;
         }];
+        
 
         self.author             = [aDecoder decodeObjectForKey:@"author"];
         self.category           = [aDecoder decodeObjectForKey:@"category"];
@@ -122,6 +123,8 @@
             self.language = BOSNIAN;
         }else if([language isEqualToString:@"ka"]){
             self.language = GEORGIAN;
+        }else if([language isEqualToString:@"tj"]){
+            self.language = TAJIKI;
         }
 
     }
@@ -198,6 +201,8 @@
         self.language = BOSNIAN;
     } else if([[language substringWithRange:NSMakeRange(0, 2)] isEqualToString:@"ka"]){
         self.language = GEORGIAN;
+    } else if([[language substringWithRange:NSMakeRange(0, 2)] isEqualToString:@"tj"]){
+        self.language = TAJIKI;
     }
 
     

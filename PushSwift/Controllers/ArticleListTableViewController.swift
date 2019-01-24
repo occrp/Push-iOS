@@ -7,14 +7,14 @@
 //
 
 import UIKit
+import Foundation
 
 class ArticleListTableViewController: UITableViewController {
     
    
     
     @objc func testSwift(){
-        var category = Category()
-   
+        
         print("Working")
     }
 

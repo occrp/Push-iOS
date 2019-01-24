@@ -1,0 +1,106 @@
+/* 
+  Strings-English.strings
+  Push
+
+  Created by Christopher Guess on 1/9/16.
+  Copyright © 2016 OCCRP. All rights reserved.
+*/
+
+/* Language Name */
+"LanguageName" = "Забон";
+
+/* Connection Error */
+"ConnectionErorr" = "Хатои пайвастшавӣ";
+
+/* Login Error */
+"LoginError" = "Хатои вуруд";
+
+/* Wrong User Name or Password */
+"WrongUserNameOrPassword" = "Хато дар ном ё гузарвожа";
+
+/* Email Address */
+"EmailAddress" = "Суроғаи почтаи электронӣ";
+
+/* Login */
+"Login" = "Вуруд";
+
+/* Password */
+"Password" = "Гузарвожа";
+
+/* Please login with your subscriber's account to access the content. */
+"PleaseLoginExplainer" = "Барои ба мундариҷа дастрасӣ пайдо кардан, лутфан бо сабти қайди обунаи худ ворид шавед.";
+
+/* OK */
+"OK" = "Ок";
+
+/* Back */
+"Back" = "Бозгашт";
+
+/* Share */
+"Share" = "Ба дигарон фиристед";
+
+/* Donate */
+"Donate" = "Кӯмак кардан";
+
+/* Choose Language */
+"ChooseLanguage" = "Интихоби забон";
+
+/* Search */
+"Search" = "Ҷустуҷӯ";
+"NoResultsFound" = "Ҷустуҷӯ натиҷа надод";
+
+/* News Alert */
+"NewsAlert" = "Паёми нав";
+"Read" = "Хондан";
+"Cancel" = "Бекор кардан";
+
+/* Pull to refresh..." */
+"Pull to refresh..." = "Барои навсозӣ кашед";
+
+/* "Release to refresh..." */
+"Release to refresh..." = "Барои навсозӣ раҳо намоед";
+
+/* "Loading..." */
+"Loading..." = "Интизор шавед";
+
+/* By */
+"by" = "Бо";
+
+/* Yesterday */
+"Yesterday" = "Дирӯз";
+
+/* January */
+"January" = "Январ";
+
+/* February */
+"February" = "Феврал";
+
+/* March */
+"March" = "Март";
+
+/* April */
+"April" = "Апрел";
+
+/* May */
+"May" = "Май";
+
+/* June */
+"June" = "Июн";
+
+/* July */
+"July" = "Июл";
+
+/* August */
+"August" = "Август";
+
+/* September */
+"September" = "Сентябр";
+
+/* October */
+"October" = "Октябр";
+
+/* November */
+"November" = "Ноябр";
+
+/* December */
+"December" = "Декабр";

@@ -16,7 +16,8 @@ typedef enum : NSUInteger {
     ROMANIAN,
     SERBIAN,
     GEORGIAN,
-    BOSNIAN
+    BOSNIAN,
+    TAJIKI
 } ArticleLanguage;
 
 @interface PushImage : RLMObject

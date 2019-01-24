@@ -56,7 +56,7 @@ static int contentWidth = 700;
     if(self){
         self.article = article;
         
-        self.view.backgroundColor = [UIColor colorWithWhite:0.9f alpha:1.0f];
+        self.view.backgroundColor = [UIColor colorWithWhite:0.9f alpha:0.5f];
         
         self.imageLocations = [NSMutableDictionary dictionary];
         
@@ -78,7 +78,6 @@ static int contentWidth = 700;
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    
     [self.view layoutIfNeeded];
 }
 
@@ -107,20 +106,21 @@ static int contentWidth = 700;
     [super viewDidAppear:animated];
     [self setContraints];
     
-    [AnalyticsManager startTimerForContentViewWithObject:self name:@"Article Viewed Time" contentType:@"Article View Time"
+    [[AnalyticsManager sharedManager] startTimerForContentViewWithObject:self name:@"Article Viewed Time" contentType:@"Article View Time"
                                                contentId:self.article.description customAttributes:self.article.trackingProperties];
-    [AnalyticsManager startTimerForContentViewWithObject:self name:self.article.headline contentType:@"Article Timer" contentId:nil customAttributes:nil];
+    [[AnalyticsManager sharedManager] startTimerForContentViewWithObject:self name:self.article.headline contentType:@"Article Timer" contentId:nil customAttributes:nil];
     
-    [AnalyticsManager logContentViewWithName:@"Article List Appeared" contentType:@"Navigation"
+    [[AnalyticsManager sharedManager] logContentViewWithName:@"Article List Appeared" contentType:@"Navigation"
                           contentId:self.article.description customAttributes:self.article.trackingProperties];
-    [AnalyticsManager logContentViewWithName:self.article.headline contentType:@"Article View" contentId:nil customAttributes:nil];
+    [[AnalyticsManager sharedManager] logContentViewWithName:self.article.headline contentType:@"Article View" contentId:nil customAttributes:nil];
+    [self setupContentView];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
-    [AnalyticsManager endTimerForContentViewWithObject:self andName:@"Article Viewed Time"];
-    [AnalyticsManager endTimerForContentViewWithObject:self andName:self.article.headline];
+    [[AnalyticsManager sharedManager] endTimerForContentViewWithObject:self andName:@"Article Viewed Time"];
+    [[AnalyticsManager sharedManager] endTimerForContentViewWithObject:self andName:self.article.headline];
     
     @try {
         [self.article removeObserver:self forKeyPath:NSStringFromSelector(@selector(bodyHTML))];
@@ -190,6 +190,7 @@ static int contentWidth = 700;
     self.body.editable = NO;
     self.body.scrollEnabled = NO;
     self.body.dataDetectorTypes = UIDataDetectorTypeLink;
+    self.body.textColor = UIColor.yellowColor;
     
     // Add the content views to the main view
     if(self.category){
@@ -428,19 +429,20 @@ static int contentWidth = 700;
     NSMutableParagraphStyle * paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     paragraphStyle.lineSpacing = 7.0f;
     
-    NSMutableAttributedString * bodyAttributedText = [[NSMutableAttributedString alloc] initWithAttributedString:self.article.bodyHTML];
+    NSMutableAttributedString * bodyAttributedText = [[NSMutableAttributedString alloc] initWithAttributedString:self.article.bodyHTML];//@"bodyAttributedText"];
     
     [bodyAttributedText addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, bodyAttributedText.string.length)];
     
-    self.body.text = self.article.dbBodyString;
-    //[bodyAttributedText addAttribute:NSForegroundColorAttributeName value:[UIColor blackColor] range:[self.body.text rangeOfString:self.body.text ]];
+    self.body.text = @"BLABLABLA";//self.article.dbBodyString;
+    [bodyAttributedText addAttribute:NSForegroundColorAttributeName value:[UIColor blackColor] range:NSMakeRange(0, bodyAttributedText.string.length)];
+    
     
     
     //bodyAttributedText = [[NSMutableAttributedString alloc] initWithAttributedString:[self addImagePlaceholderToAttributedString:bodyAttributedText]];
     
     self.body.attributedText = bodyAttributedText;
-    //[self.view bringSubviewToFront:self.body];
-    //self.body.alpha = 1;
+    [self.view bringSubviewToFront:self.body];
+    self.body.alpha = 1;
     self.body.textColor = [UIColor blackColor];
     
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -448,7 +450,7 @@ static int contentWidth = 700;
         //[self.view bringSubviewToFront:self.body];
         //self.body.alpha = 1;
         self.body.textColor = [UIColor blackColor];
-    
+    [bodyAttributedText addAttribute:NSForegroundColorAttributeName value:[UIColor blackColor] range:NSMakeRange(0, bodyAttributedText.string.length)];
       
         
     });
@@ -481,7 +483,7 @@ static int contentWidth = 700;
 
 - (void)videoButtonTapped
 {
-    [AnalyticsManager logContentViewWithName:@"Video Button Tapped" contentType:@"Navigation"
+    [[AnalyticsManager sharedManager] logContentViewWithName:@"Video Button Tapped" contentType:@"Navigation"
                                    contentId:self.article.description customAttributes:self.article.trackingProperties];
 
     YouTubePlayerViewController * youTubePlayerViewController = [[YouTubePlayerViewController alloc] initWithVideoId:self.article.videos.firstObject.youtubeId];
