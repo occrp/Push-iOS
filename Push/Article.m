@@ -260,6 +260,9 @@
     html = [html stringByReplacingOccurrencesOfString:@"<br>\n<p></p><br>" withString:@"<br />\n"];
     
     
+    
+    
+    
     NSMutableAttributedString * bodyAttributedText = [[NSMutableAttributedString alloc]
                                                       initWithHTML:[html dataUsingEncoding:NSUTF8StringEncoding]
                                                       baseURL:[SettingsManager sharedManager].cmsBaseUrl

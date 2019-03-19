@@ -218,7 +218,7 @@ static int contentWidth = 700;
 - (void)loadInitialArticles
 {
     
-    RLMResults<Category *> *Categories = [Category objectsWhere: [NSString stringWithFormat: @"language == '%@'", [LanguageManager sharedManager].languageShortCode]];//@"language == [LanguageManager sharedManager].languageShortCode"];
+    RLMResults<Category *> *Categories = [[Category objectsWhere: [NSString stringWithFormat: @"language == '%@'", [LanguageManager sharedManager].languageShortCode]] sortedResultsUsingKeyPath:@"orderIndex" ascending:true];
     NSLog(@"%@", Categories);
     self.categories = Categories;
     if(self.categories.count == 0){
@@ -241,7 +241,7 @@ static int contentWidth = 700;
         //NSLog(@"%@", categories);
         //if(articles)
         
-        RLMResults<Category *> *Categories = [Category objectsWhere: [NSString stringWithFormat: @"language == '%@'", [LanguageManager sharedManager].languageShortCode]];//@"language == [LanguageManager sharedManager].languageShortCode"];
+        RLMResults<Category *> *Categories = [[Category objectsWhere: [NSString stringWithFormat: @"language == '%@'", [LanguageManager sharedManager].languageShortCode]] sortedResultsUsingKeyPath:@"orderIndex" ascending:true];//@"language == [LanguageManager sharedManager].languageShortCode"];
         NSLog(@"%@", Categories);
         self.categories = Categories;
         //self.categories = articles;
@@ -519,14 +519,15 @@ static int contentWidth = 700;
     }
     
     ArticleViewController * articleViewController = [[ArticleViewController alloc] initWithArticle:article];
+    dispatch_async(dispatch_get_main_queue(), ^{
     [articlePageViewController setViewControllers:@[articleViewController] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
-    
+   
     [[AnalyticsManager sharedManager] logContentViewWithName:@"Article List Item Tapped" contentType:@"Navigation"
                           contentId:article.description customAttributes:article.trackingProperties];
     
     
     [self.navigationController pushViewController:articlePageViewController animated:YES];
-    
+    });
 }
 
 #pragma mark - UITableViewDataSource
@@ -619,7 +620,7 @@ static int contentWidth = 700;
     // Random number for testing
 
     
-        return [self.categories[section].articles count] + 1;
+    return 6; //[self.categories[section].articles count] + 1;
     
 }
 

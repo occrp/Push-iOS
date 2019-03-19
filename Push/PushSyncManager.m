@@ -397,7 +397,15 @@ dispatch_semaphore_t _sem;
         });
     } else {
         NSMutableDictionary * mutableCategoriesResponseDictionary = [NSMutableDictionary dictionary];
+        RLMResults<Category *> *Categories = [[Category objectsWhere: [NSString stringWithFormat: @"language == '%@'", [LanguageManager sharedManager].languageShortCode]] sortedResultsUsingKeyPath:@"orderIndex" ascending:true];
         NSArray * categoriesArray = response[@"categories"];
+        
+        if(categoriesArray.count != Categories.count ){
+            [realm beginWriteTransaction];
+            [realm deleteAllObjects];
+            [realm commitWriteTransaction];
+        }
+        NSDictionary * categoriesOrder = response[@"categoriesOrder"];
         for(NSString * category in categoriesArray){
             NSArray * articles = response[@"results"][category];
             
@@ -425,7 +433,7 @@ dispatch_semaphore_t _sem;
         [realm transactionWithBlock:^{
             for(NSString * categoryDict in [mutableCategoriesResponseDictionary allKeys]){
                 if(![categoryDict  isEqual: @"categories_order"]){
-                Category * category = [Category categoryFromArray:mutableCategoriesResponseDictionary[categoryDict] andCategory:categoryDict andLanguage: [LanguageManager sharedManager].languageShortCode];
+                    Category * category = [Category categoryFromArray:mutableCategoriesResponseDictionary[categoryDict] andCategory:categoryDict andLanguage: [LanguageManager sharedManager].languageShortCode andOrderIndex:categoriesOrder[categoryDict]];
                 [realm addOrUpdateObject:category];
                 }
                 NSLog(@"categoryDict: %@", categoryDict);
