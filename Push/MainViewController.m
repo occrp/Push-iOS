@@ -617,10 +617,14 @@ static int contentWidth = 700;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    // Random number for testing
+    NSInteger numberOfRowsInSection = 6;
+    if([self.categories[section].articles count]<5)
+    {
+        numberOfRowsInSection = [self.categories[section].articles count];
+    }
 
     
-    return 6; //[self.categories[section].articles count] + 1;
+    return numberOfRowsInSection;
     
 }
 
