@@ -48,7 +48,7 @@ static NSString * languageKey = @"push_language_key";
 - (void)setLanguage:(NSString *)language
 {
     [[NSUserDefaults standardUserDefaults] setObject:language forKey:languageKey];
-
+    
     NSSet * keys = [[self languageDictionary] keysOfEntriesPassingTest:^BOOL(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
         if([(NSString*)obj isEqualToString:language]){
             return YES;
@@ -169,7 +169,7 @@ static NSString * languageKey = @"push_language_key";
     NSString * languageFormat = @"DD/MM/YYYY";
     
     if([self.languageShortCode isEqualToString:@"sr"]){
-         languageFormat = @"DD.MM.YYYY.";
+        languageFormat = @"DD.MM.YYYY.";
     }
     
     return languageFormat;
@@ -235,7 +235,7 @@ static NSString * languageKey = @"push_language_key";
 
 - (NSArray*)nativeAvailableLanguages
 {
-   
+    
     NSMutableArray * mutableLangugages = [NSMutableArray array];
     
     for(NSString * key in [self availableLanguages]){

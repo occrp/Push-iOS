@@ -20,12 +20,12 @@
 
 
 /*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
-}
-*/
+ // Only override drawRect: if you perform custom drawing.
+ // An empty implementation adversely affects performance during animation.
+ - (void)drawRect:(CGRect)rect {
+ // Drawing code
+ }
+ */
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
@@ -57,7 +57,7 @@
 - (void)addPickerView
 {
     self.pickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 20.0f, self.frame.size.width, self.frame.size.height - 80.0f)];
-
+    
     self.pickerView.dataSource = self;
     self.pickerView.delegate = self;
     

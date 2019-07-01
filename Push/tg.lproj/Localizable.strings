@@ -1,13 +1,13 @@
-/*
- Strings-English.strings
- Push
- 
- Created by Christopher Guess on 1/9/16.
- Copyright © 2016 OCCRP. All rights reserved.
- */
+/* 
+  Strings-English.strings
+  Push
+
+  Created by Christopher Guess on 1/9/16.
+  Copyright © 2016 OCCRP. All rights reserved.
+*/
 
 /* Language Name */
-"LanguageName" = "Тоҷикӣ";
+"LanguageName" = "Забон";
 
 /* Connection Error */
 "ConnectionErorr" = "Хатои пайвастшавӣ";
@@ -43,7 +43,7 @@
 "Donate" = "Кӯмак кардан";
 
 /* Choose Language */
-"ChooseLanguage" = "Выбрать язык";
+"ChooseLanguage" = "Интихоби забон";
 
 /* Search */
 "Search" = "Ҷустуҷӯ";
@@ -104,7 +104,3 @@
 
 /* December */
 "December" = "Декабр";
-
-/* About */
-
-"About" = "Дар бораи мо";

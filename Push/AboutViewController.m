@@ -43,7 +43,7 @@ static int contentWidth = 700;
     }
     
     self.navigationItem.rightBarButtonItems = rightBarButtonItems;
-    self.navigationItem.title = @"About";
+    self.navigationItem.title = NSLocalizedString(@"About",);
 }
 
 - (void)viewDidAppear:(BOOL)animated
