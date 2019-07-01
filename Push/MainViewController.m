@@ -78,18 +78,18 @@ static int contentWidth = 700;
     
     NSLog(@"%@",[RLMRealmConfiguration defaultConfiguration].fileURL);
     
-}
+    }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     
     
-    /*  dispatch_async(dispatch_get_main_queue(), ^{
-     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-     [self loadInitialArticles];
-     //[MBProgressHUD hideHUDForView:self.view animated:YES];
-     
-     });*/
+  /*  dispatch_async(dispatch_get_main_queue(), ^{
+        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        [self loadInitialArticles];
+        //[MBProgressHUD hideHUDForView:self.view animated:YES];
+        
+    });*/
     
     
     //[self loadInitialArticles];
@@ -185,8 +185,8 @@ static int contentWidth = 700;
     self.tableView.dataSource = self;
     
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    
-    
+
+
     [self.tableView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.view);
     }];
@@ -203,7 +203,7 @@ static int contentWidth = 700;
 }
 
 - (void)viewDidLayoutSubviews {
-    
+
     [super viewDidLayoutSubviews];
 }
 
@@ -218,18 +218,18 @@ static int contentWidth = 700;
 - (void)loadInitialArticles
 {
     
-    RLMResults<Category *> *Categories = [Category objectsWhere: [NSString stringWithFormat: @"language == '%@'", [LanguageManager sharedManager].languageShortCode]];//@"language == [LanguageManager sharedManager].languageShortCode"];
+    RLMResults<Category *> *Categories = [[Category objectsWhere: [NSString stringWithFormat: @"language == '%@'", [LanguageManager sharedManager].languageShortCode]] sortedResultsUsingKeyPath:@"orderIndex" ascending:true];
     NSLog(@"%@", Categories);
     self.categories = Categories;
     if(self.categories.count == 0){
         
         [self loadArticles];
-        
+ 
     }else{
-        
-        [MBProgressHUD hideHUDForView:self.view animated:YES];
-        [self.tableView reloadData];
-        
+       
+           [MBProgressHUD hideHUDForView:self.view animated:YES];
+            [self.tableView reloadData];
+      
     }
     
 }
@@ -241,7 +241,7 @@ static int contentWidth = 700;
         //NSLog(@"%@", categories);
         //if(articles)
         
-        RLMResults<Category *> *Categories = [Category objectsWhere: [NSString stringWithFormat: @"language == '%@'", [LanguageManager sharedManager].languageShortCode]];//@"language == [LanguageManager sharedManager].languageShortCode"];
+        RLMResults<Category *> *Categories = [[Category objectsWhere: [NSString stringWithFormat: @"language == '%@'", [LanguageManager sharedManager].languageShortCode]] sortedResultsUsingKeyPath:@"orderIndex" ascending:true];//@"language == [LanguageManager sharedManager].languageShortCode"];
         NSLog(@"%@", Categories);
         self.categories = Categories;
         //self.categories = articles;
@@ -277,7 +277,7 @@ static int contentWidth = 700;
 
 - (void)loadPromotions
 {
-    
+ 
     if(self.promotionView){
         [self.promotionView removeFromSuperview];
         self.promotionView = nil;
@@ -288,7 +288,7 @@ static int contentWidth = 700;
             make.bottom.equalTo(self.view);
         }];
     }
-    
+ 
     NSArray * promotions = [PromotionsManager sharedManager].currentlyRunningPromotions;
     
     if(promotions.count == 0){
@@ -327,7 +327,7 @@ static int contentWidth = 700;
     NSString * language = [LanguageManager sharedManager].languageShortCode;
     WebSiteViewController * webSiteController = [[WebSiteViewController alloc] initWithURL:[NSURL URLWithString:promotion.urls[language]]];
     [self.navigationController presentViewController:webSiteController animated:YES completion:nil];
-    //    [self.navigationController pushViewController:webSiteController animated:YES];
+//    [self.navigationController pushViewController:webSiteController animated:YES];
 }
 
 #pragma mark - Menu Button Handling
@@ -335,8 +335,8 @@ static int contentWidth = 700;
 - (void)aboutButtonTapped
 {
     [[AnalyticsManager sharedManager] logContentViewWithName:@"About Tapped" contentType:@"Navigation"
-                                                   contentId:nil customAttributes:nil];
-    
+                          contentId:nil customAttributes:nil];
+
     AboutViewController * aboutViewController = [[AboutViewController alloc] init];
     [self.navigationController pushViewController:aboutViewController animated:YES];
 }
@@ -344,8 +344,8 @@ static int contentWidth = 700;
 - (void)searchButtonTapped
 {
     [[AnalyticsManager sharedManager] logContentViewWithName:@"Search Tapped" contentType:@"Navigation"
-                                                   contentId:nil customAttributes:nil];
-    
+                          contentId:nil customAttributes:nil];
+
     SearchViewController * searchViewController = [[SearchViewController alloc] init];
     [self.navigationController pushViewController:searchViewController animated:YES];
 }
@@ -355,13 +355,13 @@ static int contentWidth = 700;
 {
     if(!self.languagePickerView){
         [[AnalyticsManager sharedManager] logContentViewWithName:@"Language Button Tapped and Shown" contentType:@"Settings"
-                                                       contentId:nil customAttributes:nil];
-        
+                              contentId:nil customAttributes:nil];
+
         [self showLanguagePicker];
     } else {
         [[AnalyticsManager sharedManager] logContentViewWithName:@"Language Button Tapped and Hidden" contentType:@"Settings"
-                                                       contentId:nil customAttributes:nil];
-        
+                              contentId:nil customAttributes:nil];
+
         [self hideLanguagePicker];
     }
 }
@@ -371,8 +371,8 @@ static int contentWidth = 700;
 - (void)languagePickerDidChooseLanguage:(NSString *)language
 {
     [[AnalyticsManager sharedManager] logContentViewWithName:@"Language Chosen" contentType:@"Settings"
-                                                   contentId:language customAttributes:@{@"language":language}];
-    
+                          contentId:language customAttributes:@{@"language":language}];
+
     NSString * oldLanguageShortCode = [LanguageManager sharedManager].languageShortCode;
     
     [[LanguageManager sharedManager] setLanguage:language];
@@ -442,7 +442,7 @@ static int contentWidth = 700;
         [self.languagePickerFadedBackground removeFromSuperview];
         self.languagePickerFadedBackground = nil;
     }];
-    
+
 }
 
 - (void)languagePickerBackgroundTapped:(UITapGestureRecognizer*)recognizer
@@ -507,7 +507,7 @@ static int contentWidth = 700;
         [self.navigationController pushViewController:sectionViewController animated:YES];
         return;
     }
-    
+
     
     ArticlePageViewController * articlePageViewController = [[ArticlePageViewController alloc] initWithArticles: self.categories[indexPath.section].articles];
     
@@ -519,21 +519,22 @@ static int contentWidth = 700;
     }
     
     ArticleViewController * articleViewController = [[ArticleViewController alloc] initWithArticle:article];
+    dispatch_async(dispatch_get_main_queue(), ^{
     [articlePageViewController setViewControllers:@[articleViewController] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
-    
+   
     [[AnalyticsManager sharedManager] logContentViewWithName:@"Article List Item Tapped" contentType:@"Navigation"
-                                                   contentId:article.description customAttributes:article.trackingProperties];
+                          contentId:article.description customAttributes:article.trackingProperties];
     
     
     [self.navigationController pushViewController:articlePageViewController animated:YES];
-    
+    });
 }
 
 #pragma mark - UITableViewDataSource
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+ 
     //[self beginBatchFatch];
     ArticleTableViewCell * cell;
     
@@ -568,7 +569,7 @@ static int contentWidth = 700;
         
         cell.article = self.categories[indexPath.section].articles[indexPath.row - 1];
     }
-    
+
     if(self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular){
         int margin = (tableView.frame.size.width - contentWidth) / 2;
         [cell.contentView mas_remakeConstraints:^(MASConstraintMaker *make) {
@@ -603,23 +604,27 @@ static int contentWidth = 700;
 
 - (void) beginBatchFatch {
     
-    // ArticleListTableViewController * tableViewSwift = [ArticleListTableViewController new];
+   // ArticleListTableViewController * tableViewSwift = [ArticleListTableViewController new];
     //[tableViewSwift testSwift];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     
-    return [self.categories count];
-    
+        return [self.categories count];
+  
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    // Random number for testing
+    NSInteger numberOfRowsInSection = 6;
+    if([self.categories[section].articles count]<5)
+    {
+        numberOfRowsInSection = [self.categories[section].articles count];
+    }
+
     
-    
-    return [self.categories[section].articles count] + 1;
+    return numberOfRowsInSection;
     
 }
 

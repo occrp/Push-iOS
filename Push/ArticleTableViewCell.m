@@ -49,8 +49,10 @@
     }
     
     if(headerImageURL){
-        NSMutableURLRequest * request = [NSMutableURLRequest requestWithURL:[NSURL URLWithNonLatinString:headerImageURL]];
+        NSMutableURLRequest * request = [NSMutableURLRequest requestWithURL:[NSURL URLWithNonLatinString:headerImageURL] cachePolicy:NSURLRequestReturnCacheDataElseLoad timeoutInterval:60];
         [request setValue:@"text/html" forHTTPHeaderField:@"acceptableContentTypes"];
+        
+     
         
         [self.imageView setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, UIImage * _Nonnull image) {
             weakSelf.articleImageView.image = image;

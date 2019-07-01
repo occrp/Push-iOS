@@ -101,6 +101,7 @@ static int contentWidth = 700;
     Article * article = self.articles[indexPath.row];
     
     ArticleViewController * articleViewController = [[ArticleViewController alloc] initWithArticle:article];
+    dispatch_async(dispatch_get_main_queue(), ^{
     [articlePageViewController setViewControllers:@[articleViewController] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
     
     [[AnalyticsManager sharedManager] logContentViewWithName:@"Article List Item Tapped" contentType:@"Navigation"
@@ -108,6 +109,7 @@ static int contentWidth = 700;
     
     
     [self.navigationController pushViewController:articlePageViewController animated:YES];
+        });
 }
 
 #pragma mark - UITableViewDataSource

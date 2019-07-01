@@ -20,8 +20,8 @@
     return @"category";
 }
 
-+ (instancetype)categoryFromArray:(RLMArray *)array andCategory:(NSString*)categoryName andLanguage:(NSString*)lng{
-    Category * category = [[Category alloc] initWithArray:array andCategory:(NSString*)categoryName andLanguage:(NSString*)lng];
++ (instancetype)categoryFromArray:(RLMArray *)array andCategory:(NSString*)categoryName andLanguage:(NSString*)lng andOrderIndex:(NSString*)orderIndex{
+    Category * category = [[Category alloc] initWithArray:array andCategory:(NSString*)categoryName andLanguage:(NSString*)lng andOrderIndex:(NSString*)orderIndex];
     
     return category;
 }
@@ -50,14 +50,13 @@
     return self;
 }
 
-- (instancetype)initWithArray:(RLMArray *)array andCategory:(NSString*)categoryName andLanguage:(NSString*)lng{
+- (instancetype)initWithArray:(RLMArray *)array andCategory:(NSString*)categoryName andLanguage:(NSString*)lng andOrderIndex:(NSString*)orderIndex{
     self = [super init];
-    
 
-    
     self.language = lng;
     self.category = categoryName;
     self.articles = array;
+    self.orderIndex = orderIndex;
     
     return self;
     }

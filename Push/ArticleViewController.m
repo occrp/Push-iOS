@@ -428,7 +428,7 @@ static int contentWidth = 700;
     //Set the body using html for the formatting
     NSMutableParagraphStyle * paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     paragraphStyle.lineSpacing = 7.0f;
-    
+ 
     NSMutableAttributedString * bodyAttributedText = [[NSMutableAttributedString alloc] initWithAttributedString:self.article.bodyHTML];//@"bodyAttributedText"];
     
     [bodyAttributedText addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, bodyAttributedText.string.length)];
@@ -445,15 +445,16 @@ static int contentWidth = 700;
     self.body.alpha = 1;
     self.body.textColor = [UIColor blackColor];
     
-    dispatch_async(dispatch_get_main_queue(), ^{
+   /* dispatch_async(dispatch_get_main_queue(), ^{
         self.body.attributedText = bodyAttributedText;
+        
         //[self.view bringSubviewToFront:self.body];
         //self.body.alpha = 1;
         self.body.textColor = [UIColor blackColor];
     [bodyAttributedText addAttribute:NSForegroundColorAttributeName value:[UIColor blackColor] range:NSMakeRange(0, bodyAttributedText.string.length)];
       
         
-    });
+    });*/
 }
 
 - (void)reloadImagesInBody:(NSString*)imageURL
@@ -518,6 +519,8 @@ static int contentWidth = 700;
 {
     return YES;
 }
+
+
 
 /*
 #pragma mark - Navigation

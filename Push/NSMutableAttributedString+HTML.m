@@ -187,7 +187,15 @@
     NSMutableDictionary * mutableOptions = [NSMutableDictionary dictionaryWithDictionary:options];
     [mutableOptions addEntriesFromDictionary:@{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType,
                                                NSCharacterEncodingDocumentAttribute: @(NSUTF8StringEncoding)}];
+    NSError * error;
 
+  
+        self = [super initWithData:data options:mutableOptions documentAttributes:dict error:&error];
+        
+
+        NSLog(@"Error: %@", error.description);
+    
+    
     self = [super initWithData:data options:mutableOptions documentAttributes:dict error:nil];
     if(self){
         
