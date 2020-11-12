@@ -7,6 +7,7 @@ This is the repository for the iOS app portion of the Push app ecosystem. Theore
 - Analytics support
 - In-line images in stories
 - YouTube player support
+- Anticensurship
 
 # Set Up
 
@@ -26,3 +27,4 @@ _I *really* hope to automate a lot of this at somepoint, but it's a bit difficul
 
 - Please set up the generator first.
 - While this entire code base is in Objective-C for the moment, I'm not against going towards Swift. A full rewrite is not in the cards as the moment though.
+- As code is now old you will probably need to update pods when you generate apps 
